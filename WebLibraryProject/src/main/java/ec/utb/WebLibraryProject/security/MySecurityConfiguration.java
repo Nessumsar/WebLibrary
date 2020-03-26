@@ -5,6 +5,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+//Author: Lukas Rasmussen
 public class MySecurityConfiguration extends WebSecurityConfigurerAdapter {
     AppUserPrincipal appUserPrincipal;
 

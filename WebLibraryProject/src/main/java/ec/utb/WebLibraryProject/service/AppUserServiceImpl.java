@@ -1,6 +1,7 @@
 package ec.utb.WebLibraryProject.service;
 
 import ec.utb.WebLibraryProject.data.AppUserRepository;
+import ec.utb.WebLibraryProject.dto.CreateAppUserForm;
 import ec.utb.WebLibraryProject.entity.AppUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,12 +21,27 @@ public class AppUserServiceImpl implements AppUserService, UserDetailsService {
     }
 
     @Override
-    public AppUser registerAppUser(String firstName, String lastName, String email, String password, LocalDate regDate, boolean isAdmin) {
+    public AppUser registerAppUser(CreateAppUserForm appUserForm) {
         return null;
     }
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+        return null;
+    }
+
+    @Override
+    public AppUser save(AppUser appUser) {
+        return null;
+    }
+
+    @Override
+    public AppUser findById(int userId) {
+        return null;
+    }
+
+    @Override
+    public AppUser findByEmail(String email) {
         return null;
     }
 }

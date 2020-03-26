@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
+//Author: Lukas Rasmussen
 public class AppUserPrincipal implements UserDetails {
 
     private AppUser appUser;

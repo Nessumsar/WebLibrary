@@ -19,8 +19,16 @@ public class AppUser {
     private LocalDate regDate;
 
 
-
-    //private Set<AppUserRole> roleSet;
+    @ManyToMany(
+            cascade = {CascadeType.MERGE},
+            fetch = FetchType.EAGER
+    )
+    @JoinTable(
+            name = "app_user_app_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<AppUserRole> roleSet;
 
     public AppUser(String firstName, String lastName, String email, String password, LocalDate regDate) {
         this.firstName = firstName;
