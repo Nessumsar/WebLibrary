@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import javax.validation.Valid;
 import java.time.LocalDate;
 
+//Author: Benjamin Boson
 @Controller
 public class AdminController {
 
@@ -37,24 +38,19 @@ public class AdminController {
 
     @PostMapping("/create/user/process")
     public String postCreateUserForm(@Valid @ModelAttribute("form") CreateAppUserForm form, BindingResult bindingResult){
-
         if(appUserRepository.findByEmailIgnoreCase(form.getEmail()).isPresent()){
             FieldError error = new FieldError("form", "email", "Email is already in use");
             bindingResult.addError(error);
         }
-
         if(!form.getPassword().equals(form.getPasswordConfirm())){
             FieldError error = new FieldError("form", "passwordConfirm", "Your confirmation didn't match password");
             bindingResult.addError(error);
         }
-
         if(bindingResult.hasErrors()){
             return "create-user";
         }
-
         AppUser newAppUser = new AppUser(form.getFirstName(),form.getLastName(),form.getEmail(),form.getPassword(), LocalDate.now());
         appUserRepository.save(newAppUser);
-
         return "redirect:/index";
     }
 
@@ -66,17 +62,13 @@ public class AdminController {
 
     @PostMapping("/create/book/process")
     public String processCreateBookForm(@Valid @ModelAttribute("form") CreateBookForm form, BindingResult bindingResult){
-
-
         if(form.getMaxLoanDays().length() < 1){
             FieldError fieldError = new FieldError("form","maxLoanDays","Enter max amount of loan days");
             bindingResult.addError(fieldError);
         }
-
         if (bindingResult.hasErrors()){
             return "create-book";
         }
-
         Book book = new Book(Integer.parseInt(form.getMaxLoanDays()), form.getTitle(), form.getAuthor());
         bookRepository.save(book);
         return "redirect:/books";

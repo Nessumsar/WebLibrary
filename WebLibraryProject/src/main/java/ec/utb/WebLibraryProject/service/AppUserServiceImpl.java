@@ -12,12 +12,16 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 //Author: Lukas Rasmussen
 @Service
 public class AppUserServiceImpl implements AppUserService, UserDetailsService {
+    private AppUserRole appUserRole;
     private AppUserRepository appUserRepository;
     private BCryptPasswordEncoder passwordEncoder;
     private AppUserRoleRepository appUserRoleRepository;
@@ -31,7 +35,9 @@ public class AppUserServiceImpl implements AppUserService, UserDetailsService {
 
     @Override
     public AppUser registerAppUser(CreateAppUserForm appUserForm) {
-       // AppUserRole appUserRole = appUserRoleRepository
+        AppUserRole userRole = appUserRoleRepository.findByRole("Admin").orElseThrow(
+                () -> new IllegalArgumentException("Could't find role of Admin")
+        );
 
         AppUser user = new AppUser(appUserForm.getFirstName(),
                 appUserForm.getLastName(),
@@ -39,8 +45,14 @@ public class AppUserServiceImpl implements AppUserService, UserDetailsService {
                 passwordEncoder.encode(appUserForm.getPassword()),
                 LocalDate.now());
 
-        return null;
+        Set<AppUserRole> roleSet = new HashSet<>();
+        roleSet.add(userRole);
+        user = appUserRepository.save(user);
+        user.setRoleSet((AppUserRole) roleSet);
+        return user;
     }
+
+
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
