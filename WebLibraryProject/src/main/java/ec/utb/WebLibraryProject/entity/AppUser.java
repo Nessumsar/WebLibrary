@@ -2,9 +2,12 @@ package ec.utb.WebLibraryProject.entity;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+//Author: Benjamin Boson & Lukas Rasmussen
 @Entity
 public class AppUser {
 
@@ -29,8 +32,14 @@ public class AppUser {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<AppUserRole> roleSet;
+    @OneToMany(
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH},
+            mappedBy = "appUser"
+    )
+    private List<Loan> loanList = new ArrayList<>();
 
-    public AppUser(String firstName, String lastName, String email, String password, LocalDate regDate) {
+    public AppUser(String firstName, String lastName, String email, String password, LocalDate regDate ) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -39,6 +48,14 @@ public class AppUser {
     }
 
     public AppUser() {
+    }
+
+    public Set<AppUserRole> getRoleSet() {
+        return roleSet;
+    }
+
+    public void setRoleSet(AppUserRole role) {
+        this.roleSet = roleSet;
     }
 
     public int getAppUserId() {

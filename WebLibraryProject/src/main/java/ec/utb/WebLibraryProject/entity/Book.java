@@ -6,6 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.util.Objects;
 
+//Author: Benjamin Boson & Lukas Rasmussen
 @Entity
 public class Book {
 
@@ -21,12 +22,12 @@ public class Book {
     public Book() {
     }
 
-    public Book(int maxLoanDays, String title, String author, boolean isReserved, boolean isAvailable){
+    public Book(int maxLoanDays, String title, String author){
         this.maxLoanDays = maxLoanDays;
         this.title = title;
         this.author = author;
-        this.isReserved = isReserved;
-        this.isAvailable = isAvailable;
+        this.isReserved = true;
+        this.isAvailable = false;
     }
 
     public int getBookId() {

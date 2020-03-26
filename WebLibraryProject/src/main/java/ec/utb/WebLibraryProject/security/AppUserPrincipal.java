@@ -3,7 +3,6 @@ package ec.utb.WebLibraryProject.security;
 import ec.utb.WebLibraryProject.entity.AppUser;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import java.util.Collection;
 
 //Author: Lukas Rasmussen

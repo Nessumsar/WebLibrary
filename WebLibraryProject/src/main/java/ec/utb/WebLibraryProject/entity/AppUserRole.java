@@ -3,6 +3,7 @@ package ec.utb.WebLibraryProject.entity;
 import javax.persistence.*;
 import java.util.Objects;
 
+//Author: Benjamin Boson & Lukas Rasmussen
 @Entity
 public class AppUserRole {
 
