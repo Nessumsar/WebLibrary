@@ -13,6 +13,7 @@ public class Book {
     private int bookId;
     private int maxLoanDays;
     private String title;
+    private String author;
     private boolean isAvailable;
     private boolean isReserved;
 
