@@ -19,16 +19,8 @@ public class AppUser {
     private LocalDate regDate;
 
 
-    @ManyToMany(
-            cascade = {CascadeType.MERGE},
-            fetch = FetchType.EAGER
-    )
-    @JoinTable(
-            name = "",
-            joinColumns = @JoinColumn(name = ""),
-            inverseJoinColumns = @JoinColumn(name = "")
-    )
-    private Set<AppUserRole> roleSet;
+
+    //private Set<AppUserRole> roleSet;
 
     public AppUser(String firstName, String lastName, String email, String password, LocalDate regDate) {
         this.firstName = firstName;
@@ -95,13 +87,12 @@ public class AppUser {
                 lastName.equals(appUser.lastName) &&
                 email.equals(appUser.email) &&
                 password.equals(appUser.password) &&
-                regDate.equals(appUser.regDate) &&
-                roleSet.equals(appUser.roleSet);
+                regDate.equals(appUser.regDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(appUserId, firstName, lastName, email, password, regDate, roleSet);
+        return Objects.hash(appUserId, firstName, lastName, email, password, regDate);
     }
 
     @Override
@@ -112,7 +103,6 @@ public class AppUser {
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", regDate=" + regDate +
-                ", roleSet=" + roleSet +
                 '}';
     }
 }
