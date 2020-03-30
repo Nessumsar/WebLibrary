@@ -31,7 +31,7 @@ public class AppUser {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private Set<AppUserRole> roleSet;
+    private List<AppUserRole> roleList;
     @OneToMany(
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH},
@@ -50,12 +50,25 @@ public class AppUser {
     public AppUser() {
     }
 
-    public Set<AppUserRole> getRoleSet() {
-        return roleSet;
+    public boolean addLoan(Loan loan){
+        if (!loanList.contains(loan)) return loanList.add(loan);
+        return false;
     }
 
-    public void setRoleSet(AppUserRole role) {
-        this.roleSet = roleSet;
+    public List<Loan> getLoanList() {
+        return loanList;
+    }
+
+    public void setLoanList(List<Loan> loanList) {
+        this.loanList = loanList;
+    }
+
+    public List<AppUserRole> getRoleList() {
+        return roleList;
+    }
+
+    public void setRoleList(List<AppUserRole> roleList) {
+        this.roleList = roleList;
     }
 
     public int getAppUserId() {

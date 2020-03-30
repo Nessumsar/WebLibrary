@@ -11,7 +11,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Optional;
@@ -32,7 +31,7 @@ public class AppUserDetailsService implements UserDetailsService {
         if(userOptional.isPresent()){
             AppUser user = userOptional.get();
             Collection<GrantedAuthority> collection = new HashSet<>();
-            for(AppUserRole appRole : user.getRoleSet()){
+            for(AppUserRole appRole : user.getRoleList()){
                 collection.add(new SimpleGrantedAuthority(appRole.getRole()));
             }
             return new AppUserPrincipal(user, collection);

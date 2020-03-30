@@ -14,27 +14,22 @@ public class MySecurityConfiguration extends WebSecurityConfigurerAdapter {
     PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .antMatchers("/**").permitAll();
-    }
-
-   /* @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception{
         httpSecurity.authorizeRequests()
-                    .antMatchers("").permitAll()
+                    .antMatchers("/create/book").hasAuthority("ADMIN")
+                    .antMatchers("/**").permitAll()
                 .and()
-                    .formLogin()
-                        .loginPage("/login")
-                        .loginProcessingUrl("/login")
-                        .usernameParameter("email")
-                        .passwordParameter("password")
-                        .failureForwardUrl("/login?error")
-                        .permitAll()
+                .formLogin()
+                .loginPage("/login") //Get
+                .loginProcessingUrl("/login")
+                .usernameParameter("email")
+                .passwordParameter("password")
+                .permitAll()
                 .and()
-                    .logout()
-                    .logoutUrl("/logout")
-                    .logoutSuccessUrl("/logout");
+                .logout()
+                .logoutUrl("/logout")
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID")
+                .logoutSuccessUrl("/login?logout");
     }
-    */
 }

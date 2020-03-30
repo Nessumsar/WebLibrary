@@ -1,4 +1,4 @@
-<!-- Author: Benjamin Boson -->
+<!-- Author: Benjamin Boson & Cheng Tao-->
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
@@ -59,6 +59,10 @@
                     <span class="form-error" th:text="${error}"></span>
                 </li>
             </ul>
+        </div>
+        <div sec:authorize="hasAuthority('ADMIN')">
+            <label>Create admin</label>
+            <input type="checkbox" value="true" th:field="*{admin}">
         </div>
         <button class="btn btn-primary" type="submit">Send</button>
     </form>

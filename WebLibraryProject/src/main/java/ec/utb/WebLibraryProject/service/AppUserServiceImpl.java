@@ -5,23 +5,22 @@ import ec.utb.WebLibraryProject.data.AppUserRoleRepository;
 import ec.utb.WebLibraryProject.dto.CreateAppUserForm;
 import ec.utb.WebLibraryProject.entity.AppUser;
 import ec.utb.WebLibraryProject.entity.AppUserRole;
+import ec.utb.WebLibraryProject.security.AppUserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
-//Author: Lukas Rasmussen
+//Author: Lukas Rasmussen & Cheng Tao
 @Service
 public class AppUserServiceImpl implements AppUserService, UserDetailsService {
-    private AppUserRole appUserRole;
+
     private AppUserRepository appUserRepository;
     private BCryptPasswordEncoder passwordEncoder;
     private AppUserRoleRepository appUserRoleRepository;
@@ -34,29 +33,36 @@ public class AppUserServiceImpl implements AppUserService, UserDetailsService {
     }
 
     @Override
-    public AppUser registerAppUser(CreateAppUserForm appUserForm) {
-        AppUserRole userRole = appUserRoleRepository.findByRole("Admin").orElseThrow(
-                () -> new IllegalArgumentException("Could't find role of Admin")
-        );
+    public AppUser registerAppUser(String firstName, String lastName, String email, String password, LocalDate regDate, boolean isAdmin) {
+        AppUser newUser = new AppUser(firstName,lastName,email,passwordEncoder.encode(password),regDate);
+        List<AppUserRole> appRoleList = new ArrayList<>();
 
-        AppUser user = new AppUser(appUserForm.getFirstName(),
-                appUserForm.getLastName(),
-                appUserForm.getEmail(),
-                passwordEncoder.encode(appUserForm.getPassword()),
-                LocalDate.now());
+        if (isAdmin){
+            AppUserRole admin = appUserRoleRepository.findByRole("ADMIN").orElseThrow(IllegalArgumentException::new);
+            appRoleList.add(admin);
+        }
 
-        Set<AppUserRole> roleSet = new HashSet<>();
-        roleSet.add(userRole);
-        user = appUserRepository.save(user);
-        user.setRoleSet((AppUserRole) roleSet);
-        return user;
+        AppUserRole userRole = appUserRoleRepository.findByRole("USER").orElseThrow(IllegalArgumentException::new);
+        appRoleList.add(userRole);
+
+        newUser.setRoleList(appRoleList);
+        return appUserRepository.save(newUser);
     }
 
 
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return null;
+        Optional<AppUser> optional = appUserRepository.findByEmailIgnoreCase(email);
+        AppUser user = optional.orElseThrow(() -> new IllegalArgumentException("Email "+email+" could not be found"));
+
+        Collection<GrantedAuthority> authorities = new ArrayList<>();
+        for (AppUserRole role: user.getRoleList()){
+            SimpleGrantedAuthority authority = new SimpleGrantedAuthority(role.getRole());
+            authorities.add(authority);
+        }
+
+        return new AppUserPrincipal(user,authorities);
     }
 
     @Override

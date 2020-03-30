@@ -6,24 +6,42 @@ import java.time.LocalDate;
 //Author: Benjamin Boson
 public class CreateLoanForm {
 
-    @NotBlank(message = "Enter start of loan date")
-    private LocalDate startDate;
-    @NotBlank(message = "Enter end of loan date")
-    private LocalDate endDate;
+    @NotBlank(message = "Please enter loan date")
+    private String startDate;
+    @NotBlank(message = "Please enter return date")
+    private String endDate;
+    private String appUserEmail;
+    private String libraryBookId;
 
-    public LocalDate getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDate startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
-    public LocalDate getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDate endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
+    }
+
+    public String getAppUserEmail() {
+        return appUserEmail;
+    }
+
+    public void setAppUserEmail(String appUserEmail) {
+        this.appUserEmail = appUserEmail;
+    }
+
+    public String getLibraryBookId() {
+        return libraryBookId;
+    }
+
+    public void setLibraryBookId(String libraryBookId) {
+        this.libraryBookId = libraryBookId;
     }
 }

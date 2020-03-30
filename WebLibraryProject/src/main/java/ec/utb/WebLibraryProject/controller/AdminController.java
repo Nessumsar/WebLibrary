@@ -66,6 +66,10 @@ public class AdminController {
             FieldError fieldError = new FieldError("form","maxLoanDays","Enter max amount of loan days");
             bindingResult.addError(fieldError);
         }
+        if(form.getAuthor().length() > 1){
+            FieldError fieldError = new FieldError("form","author","Enter the name of the author");
+            bindingResult.addError(fieldError);
+        }
         if (bindingResult.hasErrors()){
             return "create-book";
         }
