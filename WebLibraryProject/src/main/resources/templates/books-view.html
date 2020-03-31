@@ -11,18 +11,6 @@
     <meta charset="UTF-8">
     <title>Books</title>
 </head>
-<body>
-<nav th:replace="navbar:: Navbar"></nav>
-<div class="container">
-    <table class="table">
-        <thead>
-        <tr>
-            <th scope="col">Title</th>
-            <th scope="col">Max loan days</th>
-            <th scope="col">Available</th>
-            <th scope="col">Reserved</th>
-        </tr>
-        </thead>
         <body>
         <nav th:replace="navbar:: Navbar"></nav>
         <div class="container">
@@ -37,7 +25,7 @@
                 <tr th:each="book: ${bookList}">
                     <td><span th:text="${book.title}"></span></td>
                     <td><span th:text="${book.maxLoanDays}"></span></td>
-                    <td th:if="${book.isAvailable()}"><a class="btn btn-primary btn-sm" th:href="@{/create/loan/{id} (id=${book.libraryBookId})}">Borrow</a></td>
+                    <td th:if="${book.isAvailable()}"><a class="btn btn-primary btn-sm" th:href="@{/create/loan/{id} (id=${book.bookId})}">Borrow</a></td>
                     <td th:if="${!book.isAvailable()}"><span>Not Available</span></td>
                 </tr>
                 </tbody>

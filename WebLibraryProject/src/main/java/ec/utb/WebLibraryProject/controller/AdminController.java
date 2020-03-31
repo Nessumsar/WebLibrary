@@ -4,8 +4,8 @@ import ec.utb.WebLibraryProject.data.AppUserRepository;
 import ec.utb.WebLibraryProject.data.BookRepository;
 import ec.utb.WebLibraryProject.dto.CreateAppUserForm;
 import ec.utb.WebLibraryProject.dto.CreateBookForm;
-import ec.utb.WebLibraryProject.entity.AppUser;
 import ec.utb.WebLibraryProject.entity.Book;
+import ec.utb.WebLibraryProject.service.AppUserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,13 +21,15 @@ import java.time.LocalDate;
 @Controller
 public class AdminController {
 
+    private AppUserServiceImpl appUserService;
     private AppUserRepository appUserRepository;
     private BookRepository bookRepository;
 
     @Autowired
-    public AdminController(AppUserRepository appUserRepository, BookRepository bookRepository) {
+    public AdminController(AppUserRepository appUserRepository, BookRepository bookRepository, AppUserServiceImpl appUserService) {
         this.appUserRepository = appUserRepository;
         this.bookRepository = bookRepository;
+        this.appUserService = appUserService;
     }
 
     @GetMapping("/create/user")
@@ -49,8 +51,7 @@ public class AdminController {
         if(bindingResult.hasErrors()){
             return "create-user";
         }
-        AppUser newAppUser = new AppUser(form.getFirstName(),form.getLastName(),form.getEmail(),form.getPassword(), LocalDate.now());
-        appUserRepository.save(newAppUser);
+        appUserService.registerAppUser(form.getFirstName(), form.getLastName(), form.getEmail(), form.getPassword(), LocalDate.now(), form.isAdmin());
         return "redirect:/index";
     }
 
@@ -77,5 +78,4 @@ public class AdminController {
         bookRepository.save(book);
         return "redirect:/books";
     }
-
 }

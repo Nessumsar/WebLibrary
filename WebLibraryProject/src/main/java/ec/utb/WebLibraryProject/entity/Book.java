@@ -24,8 +24,8 @@ public class Book {
         this.maxLoanDays = maxLoanDays;
         this.title = title;
         this.author = author;
-        this.isReserved = true;
-        this.isAvailable = false;
+        this.isReserved = false;
+        this.isAvailable = true;
     }
 
     public int getBookId() {

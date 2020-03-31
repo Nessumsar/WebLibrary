@@ -49,20 +49,20 @@ public class AppUserServiceImpl implements AppUserService, UserDetailsService {
         return appUserRepository.save(newUser);
     }
 
-
-
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Optional<AppUser> optional = appUserRepository.findByEmailIgnoreCase(email);
-        AppUser user = optional.orElseThrow(() -> new IllegalArgumentException("Email "+email+" could not be found"));
+        Optional<AppUser> userOptional = appUserRepository.findByEmailIgnoreCase(email);
+        if(userOptional.isPresent()){
+            AppUser user = userOptional.get();
+            Collection<GrantedAuthority> collection = new HashSet<>();
+            for(AppUserRole appRole : user.getRoleList()){
+                collection.add(new SimpleGrantedAuthority(appRole.getRole()));
+            }
+            return new AppUserPrincipal(user, collection);
 
-        Collection<GrantedAuthority> authorities = new ArrayList<>();
-        for (AppUserRole role: user.getRoleList()){
-            SimpleGrantedAuthority authority = new SimpleGrantedAuthority(role.getRole());
-            authorities.add(authority);
+        }else{
+            throw new UsernameNotFoundException("Couldn't find user with email " + email);
         }
-
-        return new AppUserPrincipal(user,authorities);
     }
 
     @Override
