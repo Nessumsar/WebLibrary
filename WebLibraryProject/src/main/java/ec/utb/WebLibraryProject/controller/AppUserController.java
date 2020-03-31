@@ -7,8 +7,11 @@ import ec.utb.WebLibraryProject.dto.CreateLoanForm;
 import ec.utb.WebLibraryProject.entity.AppUser;
 import ec.utb.WebLibraryProject.entity.Book;
 import ec.utb.WebLibraryProject.entity.Loan;
+import ec.utb.WebLibraryProject.exception.AppResourceNotFoundException;
 import javafx.event.Event;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -36,6 +39,24 @@ public class AppUserController {
         this.loanRepository = loanRepository;
     }
 
+    @RequestMapping(value = "loans/{email}")
+    public String getLoanView(Model model, @PathVariable("email") String email, @AuthenticationPrincipal UserDetails caller){
+        if (caller == null){
+            return "redirect:/accessDenied";
+        }
+
+        if (email.equals(caller.getUsername()) || caller.getAuthorities().stream().anyMatch(
+                auth -> auth.getAuthority().equals("ADMIN"))){
+            AppUser user = appUserRepository.findByEmailIgnoreCase(email).orElseThrow(
+                    () -> new AppResourceNotFoundException("User could not be found")
+            );
+            model.addAttribute("loanList",user.getLoanList());
+            return "loans-view";
+        }else{
+            return "access-denied";
+        }
+    }
+
     @GetMapping("/books")
     public String getBookView(Model model){
         List<Book> bookList = bookRepository.findAll();
@@ -55,6 +76,11 @@ public class AppUserController {
     @GetMapping("/login")
     public String login(){
         return "login";
+    }
+
+    @GetMapping("/accessDenied")
+    public String getAccessDenied(){
+        return "access-denied";
     }
 
     @PostMapping("/create/loan/process")
@@ -97,8 +123,17 @@ public class AppUserController {
     @GetMapping("/search")
     public String findBook(@ModelAttribute Event event, @RequestParam(value = "search", required = false) String title, Model model){
         model.addAttribute("event", event);
-        List<Book> libraryBookList = bookRepository.findByTitleContainsIgnoreCase(title);
-        model.addAttribute("bookList", libraryBookList);
+        List<Book> bookList = bookRepository.findByTitleContainsIgnoreCase(title);
+        model.addAttribute("searchResult", bookList);
         return "books-view";
+    }
+
+    @GetMapping("loans/return/{id}")
+    public String returnBook(@PathVariable("id") int loanId){
+        Loan loan = loanRepository.findById(loanId).orElseThrow(IllegalArgumentException::new);
+        loan.getAppUser().getLoanList().remove(loan);
+        loan.getBook().setAvailable(true);
+        loanRepository.delete(loan);
+        return "redirect:/index";
     }
 }

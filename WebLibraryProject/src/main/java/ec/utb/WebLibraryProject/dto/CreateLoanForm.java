@@ -11,7 +11,7 @@ public class CreateLoanForm {
     @NotBlank(message = "Please enter return date")
     private String endDate;
     private String appUserEmail;
-    private String libraryBookId;
+    private String bookId;
 
     public String getStartDate() {
         return startDate;
@@ -37,11 +37,11 @@ public class CreateLoanForm {
         this.appUserEmail = appUserEmail;
     }
 
-    public String getLibraryBookId() {
-        return libraryBookId;
+    public String getBookId() {
+        return bookId;
     }
 
-    public void setLibraryBookId(String libraryBookId) {
-        this.libraryBookId = libraryBookId;
+    public void setBookId(String bookId) {
+        this.bookId = bookId;
     }
 }

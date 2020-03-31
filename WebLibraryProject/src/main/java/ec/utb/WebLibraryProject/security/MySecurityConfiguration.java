@@ -6,7 +6,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-//Author: Lukas Rasmussen
+//Author: Lukas Rasmussen & Benjamin Boson
 @EnableWebSecurity
 public class MySecurityConfiguration extends WebSecurityConfigurerAdapter {
     AppUserPrincipal appUserPrincipal;
@@ -19,17 +19,20 @@ public class MySecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .antMatchers("/create/book").hasAuthority("ADMIN")
                     .antMatchers("/**").permitAll()
                 .and()
-                .formLogin()
-                .loginPage("/login") //Get
-                .loginProcessingUrl("/login")
-                .usernameParameter("email")
-                .passwordParameter("password")
-                .permitAll()
+                    .formLogin()
+                    .loginPage("/login") //Get
+                    .loginProcessingUrl("/login")
+                    .usernameParameter("email")
+                    .passwordParameter("password")
+                    .permitAll()
                 .and()
-                .logout()
-                .logoutUrl("/logout")
-                .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID")
-                .logoutSuccessUrl("/login?logout");
+                    .logout()
+                    .logoutUrl("/logout")
+                    .invalidateHttpSession(true)
+                    .deleteCookies("JSESSIONID")
+                    .logoutSuccessUrl("/login?logout")
+                .and()
+                    .exceptionHandling()
+                    .accessDeniedPage("/accessDenied");
     }
 }
