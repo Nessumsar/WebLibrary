@@ -24,18 +24,21 @@
                 <thead>
                 <tr>
                     <th scope="col">Title</th>
+                    <th scope="col">Author</th>
                     <th scope="col">Max loan days</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:if="${searchResult == null || searchResult.isEmpty()}" th:each="book: ${bookList}">
                     <td><span th:text="${book.title}"></span></td>
+                    <td><span th:text="${book.getAuthor()}"></span></td>
                     <td><span th:text="${book.maxLoanDays}"></span></td>
                     <td th:if="${book.isAvailable()}"><a class="btn btn-primary btn-sm" th:href="@{/create/loan/{id} (id=${book.bookId})}">Borrow</a></td>
                     <td th:if="${!book.isAvailable()}"><span>Not Available</span></td>
                 </tr>
-                <tr th:enless="${searchResult == null || searchResult.isEmpty()}" th:each="book: ${searchResult}">
+                <tr th:unless="${searchResult == null || searchResult.isEmpty()}" th:each="book: ${searchResult}">
                     <td><span th:text="${book.title}"></span></td>
+                    <td><span th:text="${book.author}"></span></td>
                     <td><span th:text="${book.maxLoanDays}"></span></td>
                     <td th:if="${book.isAvailable()}"><a class="btn btn-primary btn-sm" th:href="@{/create/loan/{id} (id=${book.bookId})}">Borrow</a></td>
                     <td th:if="${!book.isAvailable()}"><span>Not Available</span></td>
