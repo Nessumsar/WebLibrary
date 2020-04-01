@@ -67,7 +67,7 @@ public class AppUserController {
     @GetMapping("/create/loan/{libraryBookId}")
     public String getCreateLoanForm(Model model, @PathVariable("libraryBookId") int bookId){
         model.addAttribute("form",new CreateLoanForm());
-        model.addAttribute("libraryBookId",bookId);
+        model.addAttribute("bookId",bookId);
         Book book = bookRepository.findById(bookId).orElseThrow(IllegalArgumentException::new);
         model.addAttribute("book",book);
         return "create-loan";
@@ -97,7 +97,7 @@ public class AppUserController {
         }
 
         if (!form.getEndDate().isEmpty() && DAYS.between(LocalDate.parse(form.getStartDate()),LocalDate.parse(form.getEndDate()))
-                > bookRepository.findById(Integer.valueOf(form.getLibraryBookId())).orElseThrow(IllegalArgumentException::new).getMaxLoanDays()
+                > bookRepository.findById(Integer.valueOf(form.getBookId())).orElseThrow(IllegalArgumentException::new).getMaxLoanDays()
                 && LocalDate.parse(form.getStartDate()).isBefore(LocalDate.parse(form.getEndDate()))){
             FieldError error = new FieldError("form","endDate","Loan period exceeds max loan days for this book");
             bindingResult.addError(error);
@@ -105,14 +105,14 @@ public class AppUserController {
 
         if (bindingResult.hasErrors()){
             model.addAttribute("form",form);
-            model.addAttribute("libraryBookId",Integer.valueOf(form.getLibraryBookId()));
-            Book book = bookRepository.findById(Integer.valueOf(form.getLibraryBookId())).orElseThrow(IllegalArgumentException::new);
+            model.addAttribute("bookId",Integer.valueOf(form.getBookId()));
+            Book book = bookRepository.findById(Integer.valueOf(form.getBookId())).orElseThrow(IllegalArgumentException::new);
             model.addAttribute("book",book);
             return "create-loan";
         }
 
         AppUser user = appUserRepository.findByEmailIgnoreCase(form.getAppUserEmail()).orElseThrow(IllegalArgumentException::new);
-        Book book = bookRepository.findById(Integer.valueOf(form.getLibraryBookId())).orElseThrow(IllegalAccessError::new);
+        Book book = bookRepository.findById(Integer.valueOf(form.getBookId())).orElseThrow(IllegalAccessError::new);
         book.setAvailable(false);
         Loan loan = new Loan(LocalDate.parse(form.getStartDate()),LocalDate.parse(form.getEndDate()), user,book);
         user.addLoan(loan);
@@ -120,9 +120,9 @@ public class AppUserController {
         return "redirect:/index";
     }
 
+    //*** 2
     @GetMapping("/search")
-    public String findBook(@ModelAttribute Event event, @RequestParam(value = "search", required = false) String title, Model model){
-        model.addAttribute("event", event);
+    public String findBook(@RequestParam(value = "search", required = false) String title, Model model){
         List<Book> bookList = bookRepository.findByTitleContainsIgnoreCase(title);
         model.addAttribute("searchResult", bookList);
         return "books-view";

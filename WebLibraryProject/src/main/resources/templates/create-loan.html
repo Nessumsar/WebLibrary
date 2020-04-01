@@ -49,7 +49,7 @@
             </ul>
         </div>
         <input th:type="hidden" name="appUserEmail" id="appUserEmail" th:value="${#authentication.name}">
-        <input th:type="hidden" id="bookId" name="bookId" th:value="${book.bookId}">
+        <input th:type="hidden" id="bookId" name="bookId" th:value="${bookId}">
         <button class="btn btn-primary" type="submit">Borrow Book</button>
     </form>
 </div>
