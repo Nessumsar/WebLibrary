@@ -15,7 +15,7 @@
 <body>
 <nav th:replace="navbar:: Navbar"></nav>
 <div class="container">
-    <h2>Search for a book/ books</h2>
+    <h1>Search for a book/ books</h1>
     <form th:object="${searchResult}" th:action="@{/search}" method="get">
         <input type="text" name="search" id="search" placeholder="Enter the book title" />
         <input type="submit" value="Search">
@@ -47,6 +47,9 @@
             </table>
         </div>
     </form>
+</div>
+<div th:if="${message != null}">
+    <h2 class="alert" th:text="${message}"></h2>
 </div>
 </body>
 </html>

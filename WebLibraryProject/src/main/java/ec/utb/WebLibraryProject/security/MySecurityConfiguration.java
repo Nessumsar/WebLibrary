@@ -12,6 +12,8 @@ public class MySecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception{
         httpSecurity.authorizeRequests()
                     .antMatchers("/create/book").hasAuthority("ADMIN")
+                    .antMatchers("/users").hasAuthority("ADMIN")
+                    .antMatchers("/books").hasAuthority("USER")
                     .antMatchers("/**").permitAll()
                 .and()
                     .formLogin()

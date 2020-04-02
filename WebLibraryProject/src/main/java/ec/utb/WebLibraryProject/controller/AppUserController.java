@@ -7,7 +7,6 @@ import ec.utb.WebLibraryProject.dto.CreateLoanForm;
 import ec.utb.WebLibraryProject.entity.AppUser;
 import ec.utb.WebLibraryProject.entity.Book;
 import ec.utb.WebLibraryProject.entity.Loan;
-import ec.utb.WebLibraryProject.exception.AppResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,6 +17,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import static java.time.temporal.ChronoUnit.DAYS;
 
@@ -45,7 +45,7 @@ public class AppUserController {
         if (email.equals(caller.getUsername()) || caller.getAuthorities().stream().anyMatch(
                 auth -> auth.getAuthority().equals("ADMIN"))){
             AppUser user = appUserRepository.findByEmailIgnoreCase(email).orElseThrow(
-                    () -> new AppResourceNotFoundException("User could not be found")
+                    () -> new IllegalArgumentException("User could not be found")
             );
             model.addAttribute("loanList",user.getLoanList());
             return "loans-view";
@@ -55,8 +55,17 @@ public class AppUserController {
     }
 
     @GetMapping("/books")
-    public String getBookView(Model model){
-        List<Book> bookList = bookRepository.findAll();
+    public String getBookView(Model model,@RequestParam(value = "search", defaultValue = "all") String search){
+        System.out.println(search);
+        List<Book> bookList;
+        if (search.equals("all")){
+            bookList = bookRepository.findAll();
+        }else{
+            bookList = bookRepository.findByTitleContainsIgnoreCase(search);
+            if (bookList.size() < 1){
+                model.addAttribute("message","Your search '"+search+"' didn't match any book...");
+            }
+        }
         model.addAttribute("bookList",bookList);
         return "books-view";
     }
