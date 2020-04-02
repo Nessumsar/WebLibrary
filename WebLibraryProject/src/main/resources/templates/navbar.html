@@ -1,4 +1,4 @@
-<!-- Author: Benjamin Boson & Cheng Tao -->
+<!-- Author: Benjamin Boson, Cheng Tao, Rijad Hamula -->
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
@@ -23,9 +23,14 @@
             <li sec:authorize="isAuthenticated()" class="nav-item">
                 <a class="nav-link" th:href="@{/loans/{email} (email=${#authentication.name})}">Loans</a>
             </li>
-            <li class="nav-item">
+            <li sec:authorize="!isAuthenticated()" class="nav-item">
                 <a class="nav-link" th:href="@{/create/user}">Create user</a>
             </li>
+            <div sec:authorize="isAuthenticated()">
+                <li sec:authorize="hasAuthority('ADMIN')">
+                    <a class="nav-link" th:href="@{/users-view}">View users</a>
+                </li>
+            </div>
         </ul>
         <form th:action="@{/logout}" class="form-inline" method="post">
             <div sec:authorize="isAuthenticated()">
@@ -36,6 +41,7 @@
             </div>
         </form>
     </div>
+
 </nav>
 </body>
 </html>

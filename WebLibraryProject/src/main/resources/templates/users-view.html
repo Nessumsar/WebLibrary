@@ -9,12 +9,25 @@
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.css}">
     <link rel="stylesheet" th:href="@{/style.css}">
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Users</title>
 </head>
 <body>
 <nav th:replace="navbar:: Navbar"></nav>
-<div class="container">
-
+<div class="container" sec:authorize="isAuthenticated() || hasAuthority('ADMIN')">
+    <table class="table">
+        <tr>
+            <th>First name</th>
+            <th>Last name</th>
+            <th>Email</th>
+            <th>Date of registration</th>
+        </tr>
+        <tr th:each="user: ${userList}">
+            <td> <span th:text="${user.firstName}"></span></td>
+            <td> <span th:text="${user.lastName}"></span></td>
+            <td> <span th:text="${user.email}"></span></td>
+            <td> <span th:text="${user.regDate}"></span></td>
+        </tr>
+    </table>
 </div>
 </body>
 </html>

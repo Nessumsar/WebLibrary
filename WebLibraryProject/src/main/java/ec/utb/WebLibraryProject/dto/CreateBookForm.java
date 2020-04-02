@@ -3,7 +3,7 @@ package ec.utb.WebLibraryProject.dto;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-//Author: Benjamin Boson
+//Author: Benjamin Boson & Lukas Rasmussen
 public class CreateBookForm {
 
     @NotBlank(message = "Title is required")
@@ -13,7 +13,6 @@ public class CreateBookForm {
     @Size(min = 2, max = 255, message = "Author needs to be between 2-255 characters")
     private String author;
     private String maxLoanDays;
-
 
     public String getTitle() {
         return title;

@@ -5,7 +5,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-//Author: Benjamin Boson
+//Author: Benjamin Boson & Lukas Rasmussen
 public class CreateAppUserForm {
 
     @NotBlank(message = "First name is mandatory")

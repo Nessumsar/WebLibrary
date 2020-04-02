@@ -1,9 +1,8 @@
 package ec.utb.WebLibraryProject.dto;
 
 import javax.validation.constraints.NotBlank;
-import java.time.LocalDate;
 
-//Author: Benjamin Boson
+//Author: Benjamin Boson & Lukas Rasmussen
 public class CreateLoanForm {
 
     @NotBlank(message = "Please enter loan date")

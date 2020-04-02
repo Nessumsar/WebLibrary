@@ -5,7 +5,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 //Author: Benjamin Boson & Lukas Rasmussen
 @Entity
@@ -20,7 +19,6 @@ public class AppUser {
     private String email;
     private String password;
     private LocalDate regDate;
-
 
     @ManyToMany(
             cascade = {CascadeType.MERGE},

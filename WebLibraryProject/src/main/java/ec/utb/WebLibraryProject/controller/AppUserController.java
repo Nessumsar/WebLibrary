@@ -8,7 +8,6 @@ import ec.utb.WebLibraryProject.entity.AppUser;
 import ec.utb.WebLibraryProject.entity.Book;
 import ec.utb.WebLibraryProject.entity.Loan;
 import ec.utb.WebLibraryProject.exception.AppResourceNotFoundException;
-import javafx.event.Event;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,14 +16,12 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
-
 import static java.time.temporal.ChronoUnit.DAYS;
 
-//Author: Benjamin Boson
+//Author: Benjamin Boson & Cheng Tao
 @Controller
 public class AppUserController {
 
@@ -120,7 +117,6 @@ public class AppUserController {
         return "redirect:/index";
     }
 
-    //*** 2
     @GetMapping("/search")
     public String findBook(@RequestParam(value = "search", required = false) String title, Model model){
         List<Book> bookList = bookRepository.findByTitleContainsIgnoreCase(title);

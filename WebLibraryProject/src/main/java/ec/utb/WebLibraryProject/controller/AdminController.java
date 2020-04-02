@@ -4,6 +4,7 @@ import ec.utb.WebLibraryProject.data.AppUserRepository;
 import ec.utb.WebLibraryProject.data.BookRepository;
 import ec.utb.WebLibraryProject.dto.CreateAppUserForm;
 import ec.utb.WebLibraryProject.dto.CreateBookForm;
+import ec.utb.WebLibraryProject.entity.AppUser;
 import ec.utb.WebLibraryProject.entity.Book;
 import ec.utb.WebLibraryProject.service.AppUserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import javax.validation.Valid;
 import java.time.LocalDate;
+import java.util.List;
 
-//Author: Benjamin Boson
+//Author: Benjamin Boson & Rijad Hamula
 @Controller
 public class AdminController {
 
@@ -77,5 +79,12 @@ public class AdminController {
         Book book = new Book(Integer.parseInt(form.getMaxLoanDays()), form.getTitle(), form.getAuthor());
         bookRepository.save(book);
         return "redirect:/books";
+    }
+
+    @GetMapping("/users-view")
+    public String viewAllUsers(Model model ){
+        List<AppUser> app = appUserRepository.findAll();
+        model.addAttribute("userList",app);
+        return "users-view";
     }
 }
