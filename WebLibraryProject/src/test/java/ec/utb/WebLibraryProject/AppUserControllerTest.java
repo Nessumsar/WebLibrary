@@ -42,6 +42,7 @@ public class AppUserControllerTest {
     private LoanRepository loanRepository;
 
     private MockMvc mockMvc;
+    LocalDate currentDate = LocalDate.now();
 
     @BeforeEach
     void setUp() {
@@ -107,7 +108,7 @@ public class AppUserControllerTest {
     @WithMockUser(username = "BenjaminEBoson@Gmail.com", authorities = { "ADMIN", "USER" })
     public void WrongEndDateReturnError() throws Exception{
         mockMvc.perform(post("/create/loan/process")
-                .param("startDate", "2020-04-08")//String - LocalDate
+                .param("startDate", currentDate.toString())
                 .param("endDate", "2020-04-07")
                 .param("appUserEmail", "BenjaminEBoson@Gmail.com")
                 .param("bookId", "1")
@@ -122,7 +123,7 @@ public class AppUserControllerTest {
     @WithMockUser(username = "BenjaminEBoson@Gmail.com", authorities = { "ADMIN", "USER" })
     public void WrongStartDateReturnError() throws Exception{
         mockMvc.perform(post("/create/loan/process")
-                .param("startDate", "2020-04-01")//String - LocalDate
+                .param("startDate", "2020-04-01")
                 .param("endDate", "2020-04-09")
                 .param("appUserEmail", "BenjaminEBoson@Gmail.com")
                 .param("bookId", "1")
@@ -137,7 +138,7 @@ public class AppUserControllerTest {
     @WithMockUser(username = "BenjaminEBoson@Gmail.com", authorities = { "ADMIN", "USER" })
     public void OverDueReturnError() throws Exception{
         mockMvc.perform(post("/create/loan/process")
-                .param("startDate", "2020-04-09")//String - LocalDate
+                .param("startDate", currentDate.toString())
                 .param("endDate", "2020-08-09")
                 .param("appUserEmail", "BenjaminEBoson@Gmail.com")
                 .param("bookId", "1") // 90 days
@@ -152,7 +153,7 @@ public class AppUserControllerTest {
     @WithMockUser(username = "BenjaminEBoson@Gmail.com", authorities = { "ADMIN", "USER" })
     public void PostReturnNoError_302() throws Exception{
         mockMvc.perform(post("/create/loan/process")
-                .param("startDate", "2020-04-11")//String - LocalDate
+                .param("startDate", currentDate.toString())
                 .param("endDate", "2020-04-16")
                 .param("appUserEmail", "BenjaminEBoson@Gmail.com")
                 .param("bookId", "1")
