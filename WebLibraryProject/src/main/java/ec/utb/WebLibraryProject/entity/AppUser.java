@@ -9,7 +9,22 @@ import java.util.Objects;
 //Author: Benjamin Boson & Lukas Rasmussen
 @Entity
 public class AppUser {
+    /*
+    The AppUser is the most important entity of them all.
+    Without a User, you can't have any security or deny certain people access.
 
+    Id and GeneratedValue for a automatic generation of primary ID in the database.
+    Column unique means that you cant make 2 different Users with the same email.
+
+    The class has a ManyToMany relationship with Role. An Admin is still an User, therefore it has to be a ManyToMany.
+    JoinTable is a tricky annotation because it decides how the ManyToMany should act.
+    We use a "middle" table called app_user_app_role.
+    With joinColumns and inverseJoinColumns we decide where the primary keys should come from.
+    user_Id here and role_id as inverse since that's not the class we're working from.
+    If this relationship would be set in AppUserRole, we would set inverseJoinColumns on user_id instead.
+
+    We also got a OneToMany with Loan since one user can have many Loans.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int appUserId;

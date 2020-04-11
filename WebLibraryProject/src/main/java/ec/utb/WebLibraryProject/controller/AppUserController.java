@@ -17,7 +17,6 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import static java.time.temporal.ChronoUnit.DAYS;
 
@@ -36,12 +35,17 @@ public class AppUserController {
         this.loanRepository = loanRepository;
     }
 
+    //Method that returns a loan-view that shows your loans (book, loan date, return date)
+    //if caller is null, the user is not logged in, only a guest. Therefore, the guest will not get access and gets redirected.
+    //If the user is logged in, they will receive their list of loans.
+    // If the user info doesn't match the "authority", the user will be denied.
+
+    //Behövs else? + kommentar 4? formulering?
     @RequestMapping(value = "loans/{email}")
     public String getLoanView(Model model, @PathVariable("email") String email, @AuthenticationPrincipal UserDetails caller){
         if (caller == null){
             return "redirect:/accessDenied";
         }
-
         if (email.equals(caller.getUsername()) || caller.getAuthorities().stream().anyMatch(
                 auth -> auth.getAuthority().equals("ADMIN"))){
             AppUser user = appUserRepository.findByEmailIgnoreCase(email).orElseThrow(
@@ -54,6 +58,9 @@ public class AppUserController {
         }
     }
 
+    //A search method that will return a view with the books that match the keyword
+    //Set the defaultValue as "all", so when at first time visiting this page without entering keyword, the whole list will be shown
+    //When the list is empty, which means nothing matches the keyword or nothing found after entering keyword, a message will be shown
     @GetMapping("/books")
     public String getBookView(Model model,@RequestParam(value = "search", defaultValue = "all") String search){
         System.out.println(search);
@@ -70,6 +77,8 @@ public class AppUserController {
         return "books-view";
     }
 
+    //Gets the class CreateLoanForm as well as Book and adds these to the model.
+    //Returns the create-loan view.
     @GetMapping("/create/loan/{libraryBookId}")
     public String getCreateLoanForm(Model model, @PathVariable("libraryBookId") int bookId){
         model.addAttribute("form",new CreateLoanForm());
@@ -89,6 +98,8 @@ public class AppUserController {
         return "access-denied";
     }
 
+    //This method gets everything from the Loan form and checks if it's correct. If so, the loan is made.
+    //If not, an error message is displayed at the corresponding input.
     @PostMapping("/create/loan/process")
     public String processCreateLoanForm(@Valid @ModelAttribute("form") CreateLoanForm form, BindingResult bindingResult, Model model){
 
@@ -126,13 +137,8 @@ public class AppUserController {
         return "redirect:/index";
     }
 
-    @GetMapping("/search")
-    public String findBook(@RequestParam(value = "search", required = false) String title, Model model){
-        List<Book> bookList = bookRepository.findByTitleContainsIgnoreCase(title);
-        model.addAttribute("searchResult", bookList);
-        return "books-view";
-    }
-
+    //The method takes a loanId and looks for the loanId in the repository. If not found, IllegalArgumentException is thrown.
+    //If found, the loan is removed from the AppUser and LoanRepository. Also sets the book as available again.
     @GetMapping("loans/return/{id}")
     public String returnBook(@PathVariable("id") int loanId){
         Loan loan = loanRepository.findById(loanId).orElseThrow(IllegalArgumentException::new);

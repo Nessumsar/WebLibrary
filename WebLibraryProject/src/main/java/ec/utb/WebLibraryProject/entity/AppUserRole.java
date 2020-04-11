@@ -6,6 +6,9 @@ import java.util.Objects;
 //Author: Benjamin Boson & Lukas Rasmussen
 @Entity
 public class AppUserRole {
+    //This class purpose is to set the Role for the user. Admin or not.
+    //The annotations are used for the database, Id and GeneratedValue for a automatic generation of primary ID in the database.
+    //Column unique means that you cant make 2 different roles with the same name.
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

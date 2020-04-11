@@ -7,7 +7,10 @@ import javax.validation.constraints.Size;
 
 //Author: Benjamin Boson & Lukas Rasmussen
 public class CreateAppUserForm {
-
+    /*
+     The purpose of this class is to work as backend for the form used to create a new user.
+     The annotations are used to make sure that the user writes correct information. As example, an email always need an @.
+     */
     @NotBlank(message = "First name is mandatory")
     @Size(min = 2, max = 255, message = "First name need to have 2 or more letters")
     private String firstName;

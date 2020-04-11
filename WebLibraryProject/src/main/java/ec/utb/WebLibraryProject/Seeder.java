@@ -15,6 +15,8 @@ import java.time.LocalDate;
 //Author: Benjamin Boson & Lukas Rasmussen
 @Component
 public class Seeder implements CommandLineRunner {
+    //The purpose here is to create a good setup for trying the application. Try/Catch to avoid problems caused by spring.jpa.hibernate.ddl-auto
+
     private BookRepository bookRepository;
     private AppUserRepository appUserRepository;
     private LoanRepository loanRepository;

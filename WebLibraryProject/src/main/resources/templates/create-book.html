@@ -17,6 +17,8 @@
     <form th:action="@{/create/book/process}" th:object="${form}" method="post">
         <label for="title">Title</label>
         <input class="form-control" type="text" id="title" th:field="*{title}"/>
+        <label for="author">Author</label>
+        <input class="form-control" type="text" id="author" th:field="*{author}"/>
         <label for="maxLoanDays">Max loan days</label>
         <input class="form-control" type="number" id="maxLoanDays" th:field="*{maxLoanDays}">
         <div th:if="${#fields.hasErrors('maxLoanDays')}">

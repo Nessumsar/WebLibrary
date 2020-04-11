@@ -4,7 +4,10 @@ import javax.validation.constraints.NotBlank;
 
 //Author: Benjamin Boson & Lukas Rasmussen
 public class CreateLoanForm {
-
+        /*
+         The purpose of this class is to work as backend for the form used to create a new loan.
+         The annotations are used to make sure that the user writes a loan date as well as a return date.
+         */
     @NotBlank(message = "Please enter loan date")
     private String startDate;
     @NotBlank(message = "Please enter return date")

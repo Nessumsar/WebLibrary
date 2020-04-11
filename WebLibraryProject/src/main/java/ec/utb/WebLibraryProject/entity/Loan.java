@@ -7,6 +7,18 @@ import java.util.Objects;
 //Author: Benjamin Boson & Lukas Rasmussen
 @Entity
 public class Loan {
+    /*
+    The Loan class is one of the core entities.
+
+    The annotations are used for the database.
+    Id and GeneratedValue for a automatic generation of primary ID in the database.
+    ManyToOne and OneToOne to set the database relationships correctly.
+    ManyToOne to AppUser which has a OneToMany towards Loan.
+    OneToOne with Book since one loan only can have one book and vice versa.
+
+    cascade fetch?
+
+     */
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

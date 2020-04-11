@@ -7,7 +7,4 @@ import java.util.Optional;
 //Author: Lukas Rasmussen
 public interface AppUserService {
     AppUser registerAppUser(String firstName, String lastName, String email, String password, LocalDate regDate, boolean isAdmin);
-    AppUser save(AppUser appUser);
-    AppUser findById(int userId);
-    Optional<AppUser> findByEmail(String email);
 }

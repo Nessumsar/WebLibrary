@@ -31,6 +31,7 @@ public class AppUserServiceImpl implements AppUserService, UserDetailsService {
         this.appUserRoleRepository = appUserRoleRepository;
     }
 
+    //Used to register users.
     @Override
     public AppUser registerAppUser(String firstName, String lastName, String email, String password, LocalDate regDate, boolean isAdmin) {
         AppUser newUser = new AppUser(firstName,lastName,email,passwordEncoder.encode(password),regDate);
@@ -45,6 +46,8 @@ public class AppUserServiceImpl implements AppUserService, UserDetailsService {
         return appUserRepository.save(newUser);
     }
 
+    //Keeping track of the registered users.
+    // Returns a UsernameNotFoundException if not found. Returns AppUserPrincipal if correct.
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Optional<AppUser> userOptional = appUserRepository.findByEmailIgnoreCase(email);
@@ -60,19 +63,4 @@ public class AppUserServiceImpl implements AppUserService, UserDetailsService {
         }
     }
 
-    @Override
-    public AppUser save(AppUser appUser) {
-        return appUserRepository.save(appUser);
-    }
-
-    @Override
-    public AppUser findById(int userId) {
-        Optional<AppUser> userOptional = appUserRepository.findById(userId);
-        return userOptional.get();
-    }
-
-    @Override
-    public Optional<AppUser> findByEmail(String email) {
-        return appUserRepository.findByEmailIgnoreCase(email);
-    }
 }

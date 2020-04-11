@@ -6,6 +6,16 @@ import java.util.Objects;
 //Author: Benjamin Boson & Lukas Rasmussen
 @Entity
 public class Book {
+  /*
+    The Book class is one of the core entities.
+
+    The annotations are used for the database.
+    Id and GeneratedValue for a automatic generation of primary ID in the database.
+    This class needs no annotations for relationships since this is set from the Loan class.
+
+    Column unique means that you cant make 2 different books with the same title.
+     */
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
